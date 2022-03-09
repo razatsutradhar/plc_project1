@@ -1,33 +1,27 @@
 from REParser import parser
+from RENode import RENode
+
+
 charID = -1
-
-
-class Node:
-    def __init__(self, id, c, first_pos, last_pos, follow_pos, nullable=False):
-        self.id = id
-        self.c = c
-        self.first_pos = first_pos
-        self.last_pos = last_pos
-        self.follow_pos = follow_pos
-        self.nullable = nullable
-
-    def __repr__(self):
-        return '[id: ' + str(self.id) + ', char: ' + str(self.c) + ', first: ' + str(self.first_pos) + ', last: ' + str(self.last_pos) + ', follow: ' + str(self.follow_pos) + ', nullable: ' + str(self.nullable) + ' ]'
-
-
+allNodes = {}
 
 def eval_expression(tree):
+    global allNodes
+    global charID
+
     if tree[0] == 'char':
-        global charID
         charID = charID+1
-        n = Node(id=charID, c=tree[1], first_pos=[tree[1]], last_pos=[tree[1]], follow_pos=[], nullable=False)
+        n = RENode(_op='leaf', _sy=tree[1], _pos=charID)
         tree[1] = n
         print(tree)
+        allNodes.update({charID: n})
         return tree[1]
     elif tree[0] == 'cat':
+        l = eval_expression(tree[1])
+        r = eval_expression(tree[2])
+        n = RENode(_op='.', _lc=l, _rc=r)
         print(tree)
-        eval_expression(tree[1])
-        eval_expression(tree[2])
+        return n
     elif tree[0] == 'union':
         print(tree)
         eval_expression(tree[1])
@@ -53,6 +47,11 @@ def read_input():
 
 def main():
     while True:
+        global allNodes
+        global charID
+        charID = -1
+        allNodes = {}
+
         data = read_input()
         if data == 'exit;':
             break
@@ -66,7 +65,7 @@ def main():
             if isinstance(answer, str):
                 print('\nEVALUATION ERROR: ' + answer + '\n')
             else:
-                print('\nThe value is ' + str(answer) + '\n')
+                print('\nThe value is \n' + str(answer) + '\n')
         except Exception as inst:
             print(inst.args[0])
 
