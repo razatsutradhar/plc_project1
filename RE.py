@@ -3,7 +3,7 @@ from RENode import RENode
 
 
 charID = -1
-allNodes = {}
+allNodes = []
 
 def eval_expression(tree):
     global allNodes
@@ -14,22 +14,27 @@ def eval_expression(tree):
         n = RENode(_op='leaf', _sy=tree[1], _pos=charID)
         tree[1] = n
         print(tree)
-        allNodes.update({charID: n})
+        allNodes.append(n)
         return tree[1]
     elif tree[0] == 'cat':
         l = eval_expression(tree[1])
         r = eval_expression(tree[2])
         n = RENode(_op='.', _lc=l, _rc=r)
+        allNodes.append(n)
         print(tree)
         return n
     elif tree[0] == 'union':
         print(tree)
-        eval_expression(tree[1])
-        eval_expression(tree[2])
+        l = eval_expression(tree[1])
+        r = eval_expression(tree[2])
+        n = RENode(_op='+', _lc=l, _rc=r)
+        return n
+
     elif tree[0] == 'kleene':
         print(tree)
-        eval_expression(tree[1])
-
+        l = eval_expression(tree[1])
+        n = RENode(_op='*', _lc=l)
+        return n
 
 
 def read_input():
@@ -50,7 +55,7 @@ def main():
         global allNodes
         global charID
         charID = -1
-        allNodes = {}
+        allNodes = []
 
         data = read_input()
         if data == 'exit;':

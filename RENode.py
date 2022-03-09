@@ -17,12 +17,22 @@ class RENode:
             self._lastpos = self._rchild._lastpos
 
             if self._lchild._nullable:
-                self._firstpos = self._firstpos.union(self.)
+                self._firstpos = self._firstpos.union(self._rchild._firstpos)
+
+            if self._rchild._nullable:
+                self._lastpos = self._lastpos.union(self._lchild._lastpos)
+
+            self._nullable = self._lchild._nullable and self._rchild._nullable
 
         elif self._operator == '*':
             self._nullable = True
             self._firstpos = self._lchild._firstpos
             self._lastpos = self._lchild._lastpos
+
+        elif self._operator == '+':
+            self._firstpos = set().union(self._rchild._firstpos).union(self._lchild._firstpos)
+            self._lastpos = set().union(self._rchild._lastpos).union(self._lchild._lastpos)
+            self._nullable = self._lchild._nullable or self._rchild._nullable
 
 
 

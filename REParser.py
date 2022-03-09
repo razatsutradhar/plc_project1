@@ -44,11 +44,21 @@ def p_exprKLE_1(p):
 
 
 def p_exprKLE_2(p):
+    'exprKLE : exprUN KLEENE'
+    p[0] = ['kleene', p[1]]
+
+
+def p_exprKLE_3(p):
+    'exprKLE : exprCAT KLEENE'
+    p[0] = ['kleene', p[1]]
+
+
+def p_exprKLE_4(p):
     'exprKLE : LPAR exprKLE RPAR'
     p[0] = p[2]
 
 
-def p_exprKLE_3(p):
+def p_exprKLE_5(p):
     'exprKLE : expr'
     p[0] = p[1]
 
