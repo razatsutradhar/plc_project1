@@ -3,13 +3,13 @@ Created by PLY version 3.11 (http://www.dabeaz.com/ply)
 Grammar
 
 Rule 0     S' -> starter
-Rule 1     starter -> exprCAT SEMI
+Rule 1     starter -> exprUN SEMI
 Rule 2     exprCAT -> exprCAT exprCAT
 Rule 3     exprCAT -> LPAR exprCAT RPAR
-Rule 4     exprCAT -> exprUN
-Rule 5     exprUN -> LPAR exprUN RPAR
-Rule 6     exprUN -> exprUN UNION exprUN
-Rule 7     exprUN -> exprKLE
+Rule 4     exprCAT -> exprKLE
+Rule 5     exprUN -> exprUN UNION exprCAT
+Rule 6     exprUN -> exprCAT
+Rule 7     exprUN -> LPAR exprUN RPAR
 Rule 8     exprKLE -> exprKLE KLEENE
 Rule 9     exprKLE -> exprUN KLEENE
 Rule 10    exprKLE -> exprCAT KLEENE
@@ -22,18 +22,18 @@ Terminals, with rules where they appear
 
 CHAR                 : 14
 KLEENE               : 8 9 10
-LPAR                 : 3 5 11 13
-RPAR                 : 3 5 11 13
+LPAR                 : 3 7 11 13
+RPAR                 : 3 7 11 13
 SEMI                 : 1
-UNION                : 6
+UNION                : 5
 error                : 
 
 Nonterminals, with rules where they appear
 
 expr                 : 12 13
-exprCAT              : 1 2 2 3 10
-exprKLE              : 7 8 11
-exprUN               : 4 5 6 6 9
+exprCAT              : 2 2 3 5 6 10
+exprKLE              : 4 8 11
+exprUN               : 1 5 7 9
 starter              : 0
 
 Parsing method: LALR
@@ -41,13 +41,13 @@ Parsing method: LALR
 state 0
 
     (0) S' -> . starter
-    (1) starter -> . exprCAT SEMI
+    (1) starter -> . exprUN SEMI
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
     (2) exprCAT -> . exprCAT exprCAT
     (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
+    (4) exprCAT -> . exprKLE
     (8) exprKLE -> . exprKLE KLEENE
     (9) exprKLE -> . exprUN KLEENE
     (10) exprKLE -> . exprCAT KLEENE
@@ -56,12 +56,12 @@ state 0
     (13) expr -> . LPAR expr RPAR
     (14) expr -> . CHAR
 
-    LPAR            shift and go to state 3
+    LPAR            shift and go to state 4
     CHAR            shift and go to state 7
 
     starter                        shift and go to state 1
-    exprCAT                        shift and go to state 2
-    exprUN                         shift and go to state 4
+    exprUN                         shift and go to state 2
+    exprCAT                        shift and go to state 3
     exprKLE                        shift and go to state 5
     expr                           shift and go to state 6
 
@@ -73,92 +73,90 @@ state 1
 
 state 2
 
-    (1) starter -> exprCAT . SEMI
+    (1) starter -> exprUN . SEMI
+    (5) exprUN -> exprUN . UNION exprCAT
+    (9) exprKLE -> exprUN . KLEENE
+
+    SEMI            shift and go to state 8
+    UNION           shift and go to state 9
+    KLEENE          shift and go to state 10
+
+
+state 3
+
+    (6) exprUN -> exprCAT .
     (2) exprCAT -> exprCAT . exprCAT
     (10) exprKLE -> exprCAT . KLEENE
     (2) exprCAT -> . exprCAT exprCAT
     (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
+    (4) exprCAT -> . exprKLE
     (8) exprKLE -> . exprKLE KLEENE
     (9) exprKLE -> . exprUN KLEENE
     (10) exprKLE -> . exprCAT KLEENE
     (11) exprKLE -> . LPAR exprKLE RPAR
     (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
     (13) expr -> . LPAR expr RPAR
     (14) expr -> . CHAR
 
-    SEMI            shift and go to state 9
-    KLEENE          shift and go to state 10
-    LPAR            shift and go to state 3
+  ! shift/reduce conflict for KLEENE resolved as shift
+    SEMI            reduce using rule 6 (exprUN -> exprCAT .)
+    UNION           reduce using rule 6 (exprUN -> exprCAT .)
+    KLEENE          shift and go to state 12
+    LPAR            shift and go to state 13
     CHAR            shift and go to state 7
 
-    exprCAT                        shift and go to state 8
-    exprUN                         shift and go to state 4
-    exprKLE                        shift and go to state 5
-    expr                           shift and go to state 6
-
-state 3
-
-    (3) exprCAT -> LPAR . exprCAT RPAR
-    (5) exprUN -> LPAR . exprUN RPAR
-    (11) exprKLE -> LPAR . exprKLE RPAR
-    (13) expr -> LPAR . expr RPAR
-    (2) exprCAT -> . exprCAT exprCAT
-    (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
-    (8) exprKLE -> . exprKLE KLEENE
-    (9) exprKLE -> . exprUN KLEENE
-    (10) exprKLE -> . exprCAT KLEENE
-    (11) exprKLE -> . LPAR exprKLE RPAR
-    (12) exprKLE -> . expr
-    (13) expr -> . LPAR expr RPAR
-    (14) expr -> . CHAR
-
-    LPAR            shift and go to state 3
-    CHAR            shift and go to state 7
+  ! KLEENE          [ reduce using rule 6 (exprUN -> exprCAT .) ]
 
     exprCAT                        shift and go to state 11
-    exprUN                         shift and go to state 12
-    exprKLE                        shift and go to state 13
-    expr                           shift and go to state 14
+    exprKLE                        shift and go to state 5
+    exprUN                         shift and go to state 14
+    expr                           shift and go to state 6
 
 state 4
 
-    (4) exprCAT -> exprUN .
-    (6) exprUN -> exprUN . UNION exprUN
-    (9) exprKLE -> exprUN . KLEENE
+    (7) exprUN -> LPAR . exprUN RPAR
+    (3) exprCAT -> LPAR . exprCAT RPAR
+    (11) exprKLE -> LPAR . exprKLE RPAR
+    (13) expr -> LPAR . expr RPAR
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
+    (2) exprCAT -> . exprCAT exprCAT
+    (3) exprCAT -> . LPAR exprCAT RPAR
+    (4) exprCAT -> . exprKLE
+    (8) exprKLE -> . exprKLE KLEENE
+    (9) exprKLE -> . exprUN KLEENE
+    (10) exprKLE -> . exprCAT KLEENE
+    (11) exprKLE -> . LPAR exprKLE RPAR
+    (12) exprKLE -> . expr
+    (13) expr -> . LPAR expr RPAR
+    (14) expr -> . CHAR
 
-  ! shift/reduce conflict for KLEENE resolved as shift
-    SEMI            reduce using rule 4 (exprCAT -> exprUN .)
-    LPAR            reduce using rule 4 (exprCAT -> exprUN .)
-    CHAR            reduce using rule 4 (exprCAT -> exprUN .)
-    RPAR            reduce using rule 4 (exprCAT -> exprUN .)
-    UNION           shift and go to state 15
-    KLEENE          shift and go to state 16
+    LPAR            shift and go to state 4
+    CHAR            shift and go to state 7
 
-  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprUN .) ]
-
+    exprUN                         shift and go to state 15
+    exprCAT                        shift and go to state 16
+    exprKLE                        shift and go to state 17
+    expr                           shift and go to state 18
 
 state 5
 
-    (7) exprUN -> exprKLE .
+    (4) exprCAT -> exprKLE .
     (8) exprKLE -> exprKLE . KLEENE
 
   ! shift/reduce conflict for KLEENE resolved as shift
-    UNION           reduce using rule 7 (exprUN -> exprKLE .)
-    SEMI            reduce using rule 7 (exprUN -> exprKLE .)
-    LPAR            reduce using rule 7 (exprUN -> exprKLE .)
-    CHAR            reduce using rule 7 (exprUN -> exprKLE .)
-    RPAR            reduce using rule 7 (exprUN -> exprKLE .)
-    KLEENE          shift and go to state 17
+    LPAR            reduce using rule 4 (exprCAT -> exprKLE .)
+    CHAR            reduce using rule 4 (exprCAT -> exprKLE .)
+    SEMI            reduce using rule 4 (exprCAT -> exprKLE .)
+    UNION           reduce using rule 4 (exprCAT -> exprKLE .)
+    RPAR            reduce using rule 4 (exprCAT -> exprKLE .)
+    KLEENE          shift and go to state 19
 
-  ! KLEENE          [ reduce using rule 7 (exprUN -> exprKLE .) ]
+  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprKLE .) ]
 
 
 state 6
@@ -166,10 +164,10 @@ state 6
     (12) exprKLE -> expr .
 
     KLEENE          reduce using rule 12 (exprKLE -> expr .)
-    UNION           reduce using rule 12 (exprKLE -> expr .)
-    SEMI            reduce using rule 12 (exprKLE -> expr .)
     LPAR            reduce using rule 12 (exprKLE -> expr .)
     CHAR            reduce using rule 12 (exprKLE -> expr .)
+    SEMI            reduce using rule 12 (exprKLE -> expr .)
+    UNION           reduce using rule 12 (exprKLE -> expr .)
     RPAR            reduce using rule 12 (exprKLE -> expr .)
 
 
@@ -178,391 +176,391 @@ state 7
     (14) expr -> CHAR .
 
     KLEENE          reduce using rule 14 (expr -> CHAR .)
-    UNION           reduce using rule 14 (expr -> CHAR .)
-    SEMI            reduce using rule 14 (expr -> CHAR .)
     LPAR            reduce using rule 14 (expr -> CHAR .)
     CHAR            reduce using rule 14 (expr -> CHAR .)
+    SEMI            reduce using rule 14 (expr -> CHAR .)
+    UNION           reduce using rule 14 (expr -> CHAR .)
     RPAR            reduce using rule 14 (expr -> CHAR .)
 
 
 state 8
 
-    (2) exprCAT -> exprCAT exprCAT .
-    (2) exprCAT -> exprCAT . exprCAT
-    (10) exprKLE -> exprCAT . KLEENE
+    (1) starter -> exprUN SEMI .
+
+    $end            reduce using rule 1 (starter -> exprUN SEMI .)
+
+
+state 9
+
+    (5) exprUN -> exprUN UNION . exprCAT
     (2) exprCAT -> . exprCAT exprCAT
     (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
+    (4) exprCAT -> . exprKLE
     (8) exprKLE -> . exprKLE KLEENE
     (9) exprKLE -> . exprUN KLEENE
     (10) exprKLE -> . exprCAT KLEENE
     (11) exprKLE -> . LPAR exprKLE RPAR
     (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
+    (13) expr -> . LPAR expr RPAR
+    (14) expr -> . CHAR
+
+    LPAR            shift and go to state 13
+    CHAR            shift and go to state 7
+
+    exprUN                         shift and go to state 14
+    exprCAT                        shift and go to state 20
+    exprKLE                        shift and go to state 5
+    expr                           shift and go to state 6
+
+state 10
+
+    (9) exprKLE -> exprUN KLEENE .
+
+    KLEENE          reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+    LPAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+    CHAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+    SEMI            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+    UNION           reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+    RPAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
+
+
+state 11
+
+    (2) exprCAT -> exprCAT exprCAT .
+    (2) exprCAT -> exprCAT . exprCAT
+    (10) exprKLE -> exprCAT . KLEENE
+    (6) exprUN -> exprCAT .
+    (2) exprCAT -> . exprCAT exprCAT
+    (3) exprCAT -> . LPAR exprCAT RPAR
+    (4) exprCAT -> . exprKLE
+    (8) exprKLE -> . exprKLE KLEENE
+    (9) exprKLE -> . exprUN KLEENE
+    (10) exprKLE -> . exprCAT KLEENE
+    (11) exprKLE -> . LPAR exprKLE RPAR
+    (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
     (13) expr -> . LPAR expr RPAR
     (14) expr -> . CHAR
 
   ! shift/reduce conflict for KLEENE resolved as shift
+  ! shift/reduce conflict for KLEENE resolved as shift
+  ! reduce/reduce conflict for UNION resolved using rule 2 (exprCAT -> exprCAT exprCAT .)
   ! shift/reduce conflict for LPAR resolved as shift
   ! shift/reduce conflict for CHAR resolved as shift
     SEMI            reduce using rule 2 (exprCAT -> exprCAT exprCAT .)
+    UNION           reduce using rule 2 (exprCAT -> exprCAT exprCAT .)
     RPAR            reduce using rule 2 (exprCAT -> exprCAT exprCAT .)
-    KLEENE          shift and go to state 10
-    LPAR            shift and go to state 3
+    KLEENE          shift and go to state 12
+    LPAR            shift and go to state 13
     CHAR            shift and go to state 7
 
   ! KLEENE          [ reduce using rule 2 (exprCAT -> exprCAT exprCAT .) ]
   ! LPAR            [ reduce using rule 2 (exprCAT -> exprCAT exprCAT .) ]
   ! CHAR            [ reduce using rule 2 (exprCAT -> exprCAT exprCAT .) ]
+  ! KLEENE          [ reduce using rule 6 (exprUN -> exprCAT .) ]
+  ! UNION           [ reduce using rule 6 (exprUN -> exprCAT .) ]
 
-    exprCAT                        shift and go to state 8
-    exprUN                         shift and go to state 4
+    exprCAT                        shift and go to state 11
     exprKLE                        shift and go to state 5
+    exprUN                         shift and go to state 14
     expr                           shift and go to state 6
 
-state 9
-
-    (1) starter -> exprCAT SEMI .
-
-    $end            reduce using rule 1 (starter -> exprCAT SEMI .)
-
-
-state 10
+state 12
 
     (10) exprKLE -> exprCAT KLEENE .
 
     KLEENE          reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
-    UNION           reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
-    SEMI            reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
     LPAR            reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
     CHAR            reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
+    SEMI            reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
+    UNION           reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
     RPAR            reduce using rule 10 (exprKLE -> exprCAT KLEENE .)
 
 
-state 11
+state 13
 
-    (3) exprCAT -> LPAR exprCAT . RPAR
-    (2) exprCAT -> exprCAT . exprCAT
-    (10) exprKLE -> exprCAT . KLEENE
+    (3) exprCAT -> LPAR . exprCAT RPAR
+    (11) exprKLE -> LPAR . exprKLE RPAR
+    (7) exprUN -> LPAR . exprUN RPAR
+    (13) expr -> LPAR . expr RPAR
     (2) exprCAT -> . exprCAT exprCAT
     (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
+    (4) exprCAT -> . exprKLE
     (8) exprKLE -> . exprKLE KLEENE
     (9) exprKLE -> . exprUN KLEENE
     (10) exprKLE -> . exprCAT KLEENE
     (11) exprKLE -> . LPAR exprKLE RPAR
     (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
     (13) expr -> . LPAR expr RPAR
     (14) expr -> . CHAR
 
-    RPAR            shift and go to state 18
-    KLEENE          shift and go to state 10
-    LPAR            shift and go to state 3
+    LPAR            shift and go to state 13
     CHAR            shift and go to state 7
 
-    exprCAT                        shift and go to state 8
-    exprUN                         shift and go to state 4
-    exprKLE                        shift and go to state 5
-    expr                           shift and go to state 6
+    exprCAT                        shift and go to state 21
+    exprKLE                        shift and go to state 17
+    exprUN                         shift and go to state 22
+    expr                           shift and go to state 18
 
-state 12
+state 14
 
-    (5) exprUN -> LPAR exprUN . RPAR
-    (4) exprCAT -> exprUN .
-    (6) exprUN -> exprUN . UNION exprUN
     (9) exprKLE -> exprUN . KLEENE
+    (5) exprUN -> exprUN . UNION exprCAT
+
+    KLEENE          shift and go to state 10
+    UNION           shift and go to state 9
+
+
+state 15
+
+    (7) exprUN -> LPAR exprUN . RPAR
+    (5) exprUN -> exprUN . UNION exprCAT
+    (9) exprKLE -> exprUN . KLEENE
+
+    RPAR            shift and go to state 23
+    UNION           shift and go to state 9
+    KLEENE          shift and go to state 10
+
+
+state 16
+
+    (3) exprCAT -> LPAR exprCAT . RPAR
+    (6) exprUN -> exprCAT .
+    (2) exprCAT -> exprCAT . exprCAT
+    (10) exprKLE -> exprCAT . KLEENE
+    (2) exprCAT -> . exprCAT exprCAT
+    (3) exprCAT -> . LPAR exprCAT RPAR
+    (4) exprCAT -> . exprKLE
+    (8) exprKLE -> . exprKLE KLEENE
+    (9) exprKLE -> . exprUN KLEENE
+    (10) exprKLE -> . exprCAT KLEENE
+    (11) exprKLE -> . LPAR exprKLE RPAR
+    (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
+    (13) expr -> . LPAR expr RPAR
+    (14) expr -> . CHAR
 
   ! shift/reduce conflict for RPAR resolved as shift
   ! shift/reduce conflict for KLEENE resolved as shift
-    RPAR            shift and go to state 19
-    LPAR            reduce using rule 4 (exprCAT -> exprUN .)
-    CHAR            reduce using rule 4 (exprCAT -> exprUN .)
-    UNION           shift and go to state 15
-    KLEENE          shift and go to state 16
+    RPAR            shift and go to state 24
+    UNION           reduce using rule 6 (exprUN -> exprCAT .)
+    KLEENE          shift and go to state 12
+    LPAR            shift and go to state 13
+    CHAR            shift and go to state 7
 
-  ! RPAR            [ reduce using rule 4 (exprCAT -> exprUN .) ]
-  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprUN .) ]
+  ! RPAR            [ reduce using rule 6 (exprUN -> exprCAT .) ]
+  ! KLEENE          [ reduce using rule 6 (exprUN -> exprCAT .) ]
 
+    exprCAT                        shift and go to state 11
+    exprKLE                        shift and go to state 5
+    exprUN                         shift and go to state 14
+    expr                           shift and go to state 6
 
-state 13
+state 17
 
     (11) exprKLE -> LPAR exprKLE . RPAR
-    (7) exprUN -> exprKLE .
+    (4) exprCAT -> exprKLE .
     (8) exprKLE -> exprKLE . KLEENE
 
   ! shift/reduce conflict for RPAR resolved as shift
   ! shift/reduce conflict for KLEENE resolved as shift
-    RPAR            shift and go to state 20
-    UNION           reduce using rule 7 (exprUN -> exprKLE .)
-    LPAR            reduce using rule 7 (exprUN -> exprKLE .)
-    CHAR            reduce using rule 7 (exprUN -> exprKLE .)
-    KLEENE          shift and go to state 17
+    RPAR            shift and go to state 25
+    LPAR            reduce using rule 4 (exprCAT -> exprKLE .)
+    CHAR            reduce using rule 4 (exprCAT -> exprKLE .)
+    UNION           reduce using rule 4 (exprCAT -> exprKLE .)
+    KLEENE          shift and go to state 19
 
-  ! RPAR            [ reduce using rule 7 (exprUN -> exprKLE .) ]
-  ! KLEENE          [ reduce using rule 7 (exprUN -> exprKLE .) ]
+  ! RPAR            [ reduce using rule 4 (exprCAT -> exprKLE .) ]
+  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprKLE .) ]
 
 
-state 14
+state 18
 
     (13) expr -> LPAR expr . RPAR
     (12) exprKLE -> expr .
 
   ! shift/reduce conflict for RPAR resolved as shift
-    RPAR            shift and go to state 21
+    RPAR            shift and go to state 26
     KLEENE          reduce using rule 12 (exprKLE -> expr .)
-    UNION           reduce using rule 12 (exprKLE -> expr .)
     LPAR            reduce using rule 12 (exprKLE -> expr .)
     CHAR            reduce using rule 12 (exprKLE -> expr .)
+    UNION           reduce using rule 12 (exprKLE -> expr .)
 
   ! RPAR            [ reduce using rule 12 (exprKLE -> expr .) ]
 
 
-state 15
-
-    (6) exprUN -> exprUN UNION . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
-    (8) exprKLE -> . exprKLE KLEENE
-    (9) exprKLE -> . exprUN KLEENE
-    (10) exprKLE -> . exprCAT KLEENE
-    (11) exprKLE -> . LPAR exprKLE RPAR
-    (12) exprKLE -> . expr
-    (2) exprCAT -> . exprCAT exprCAT
-    (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (13) expr -> . LPAR expr RPAR
-    (14) expr -> . CHAR
-
-    LPAR            shift and go to state 23
-    CHAR            shift and go to state 7
-
-    exprUN                         shift and go to state 22
-    exprKLE                        shift and go to state 5
-    exprCAT                        shift and go to state 24
-    expr                           shift and go to state 6
-
-state 16
-
-    (9) exprKLE -> exprUN KLEENE .
-
-    KLEENE          reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-    UNION           reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-    SEMI            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-    LPAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-    CHAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-    RPAR            reduce using rule 9 (exprKLE -> exprUN KLEENE .)
-
-
-state 17
+state 19
 
     (8) exprKLE -> exprKLE KLEENE .
 
     KLEENE          reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
-    UNION           reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
-    SEMI            reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
     LPAR            reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
     CHAR            reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
+    SEMI            reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
+    UNION           reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
     RPAR            reduce using rule 8 (exprKLE -> exprKLE KLEENE .)
-
-
-state 18
-
-    (3) exprCAT -> LPAR exprCAT RPAR .
-
-    SEMI            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
-    KLEENE          reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
-    LPAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
-    CHAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
-    RPAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
-
-
-state 19
-
-    (5) exprUN -> LPAR exprUN RPAR .
-
-    UNION           reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
-    KLEENE          reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
-    SEMI            reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
-    LPAR            reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
-    CHAR            reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
-    RPAR            reduce using rule 5 (exprUN -> LPAR exprUN RPAR .)
 
 
 state 20
 
-    (11) exprKLE -> LPAR exprKLE RPAR .
+    (5) exprUN -> exprUN UNION exprCAT .
+    (2) exprCAT -> exprCAT . exprCAT
+    (10) exprKLE -> exprCAT . KLEENE
+    (6) exprUN -> exprCAT .
+    (2) exprCAT -> . exprCAT exprCAT
+    (3) exprCAT -> . LPAR exprCAT RPAR
+    (4) exprCAT -> . exprKLE
+    (8) exprKLE -> . exprKLE KLEENE
+    (9) exprKLE -> . exprUN KLEENE
+    (10) exprKLE -> . exprCAT KLEENE
+    (11) exprKLE -> . LPAR exprKLE RPAR
+    (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
+    (13) expr -> . LPAR expr RPAR
+    (14) expr -> . CHAR
 
-    KLEENE          reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
-    UNION           reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
-    SEMI            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
-    LPAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
-    CHAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
-    RPAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+  ! shift/reduce conflict for KLEENE resolved as shift
+  ! shift/reduce conflict for KLEENE resolved as shift
+  ! reduce/reduce conflict for UNION resolved using rule 5 (exprUN -> exprUN UNION exprCAT .)
+    SEMI            reduce using rule 5 (exprUN -> exprUN UNION exprCAT .)
+    UNION           reduce using rule 5 (exprUN -> exprUN UNION exprCAT .)
+    RPAR            reduce using rule 5 (exprUN -> exprUN UNION exprCAT .)
+    KLEENE          shift and go to state 12
+    LPAR            shift and go to state 13
+    CHAR            shift and go to state 7
 
+  ! KLEENE          [ reduce using rule 5 (exprUN -> exprUN UNION exprCAT .) ]
+  ! KLEENE          [ reduce using rule 6 (exprUN -> exprCAT .) ]
+  ! UNION           [ reduce using rule 6 (exprUN -> exprCAT .) ]
+
+    exprUN                         shift and go to state 14
+    exprCAT                        shift and go to state 11
+    exprKLE                        shift and go to state 5
+    expr                           shift and go to state 6
 
 state 21
 
-    (13) expr -> LPAR expr RPAR .
+    (3) exprCAT -> LPAR exprCAT . RPAR
+    (2) exprCAT -> exprCAT . exprCAT
+    (10) exprKLE -> exprCAT . KLEENE
+    (6) exprUN -> exprCAT .
+    (2) exprCAT -> . exprCAT exprCAT
+    (3) exprCAT -> . LPAR exprCAT RPAR
+    (4) exprCAT -> . exprKLE
+    (8) exprKLE -> . exprKLE KLEENE
+    (9) exprKLE -> . exprUN KLEENE
+    (10) exprKLE -> . exprCAT KLEENE
+    (11) exprKLE -> . LPAR exprKLE RPAR
+    (12) exprKLE -> . expr
+    (5) exprUN -> . exprUN UNION exprCAT
+    (6) exprUN -> . exprCAT
+    (7) exprUN -> . LPAR exprUN RPAR
+    (13) expr -> . LPAR expr RPAR
+    (14) expr -> . CHAR
 
-    KLEENE          reduce using rule 13 (expr -> LPAR expr RPAR .)
-    UNION           reduce using rule 13 (expr -> LPAR expr RPAR .)
-    SEMI            reduce using rule 13 (expr -> LPAR expr RPAR .)
-    LPAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
-    CHAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
-    RPAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
+  ! shift/reduce conflict for RPAR resolved as shift
+  ! shift/reduce conflict for KLEENE resolved as shift
+    RPAR            shift and go to state 24
+    KLEENE          shift and go to state 12
+    UNION           reduce using rule 6 (exprUN -> exprCAT .)
+    LPAR            shift and go to state 13
+    CHAR            shift and go to state 7
 
+  ! RPAR            [ reduce using rule 6 (exprUN -> exprCAT .) ]
+  ! KLEENE          [ reduce using rule 6 (exprUN -> exprCAT .) ]
+
+    exprCAT                        shift and go to state 11
+    exprKLE                        shift and go to state 5
+    exprUN                         shift and go to state 14
+    expr                           shift and go to state 6
 
 state 22
 
-    (6) exprUN -> exprUN UNION exprUN .
-    (6) exprUN -> exprUN . UNION exprUN
+    (7) exprUN -> LPAR exprUN . RPAR
     (9) exprKLE -> exprUN . KLEENE
-    (4) exprCAT -> exprUN .
+    (5) exprUN -> exprUN . UNION exprCAT
 
-  ! shift/reduce conflict for UNION resolved as shift
-  ! shift/reduce conflict for KLEENE resolved as shift
-  ! shift/reduce conflict for KLEENE resolved as shift
-  ! reduce/reduce conflict for LPAR resolved using rule 4 (exprCAT -> exprUN .)
-  ! reduce/reduce conflict for CHAR resolved using rule 4 (exprCAT -> exprUN .)
-    SEMI            reduce using rule 6 (exprUN -> exprUN UNION exprUN .)
-    RPAR            reduce using rule 6 (exprUN -> exprUN UNION exprUN .)
-    UNION           shift and go to state 15
-    KLEENE          shift and go to state 16
-    LPAR            reduce using rule 4 (exprCAT -> exprUN .)
-    CHAR            reduce using rule 4 (exprCAT -> exprUN .)
-
-  ! UNION           [ reduce using rule 6 (exprUN -> exprUN UNION exprUN .) ]
-  ! KLEENE          [ reduce using rule 6 (exprUN -> exprUN UNION exprUN .) ]
-  ! LPAR            [ reduce using rule 6 (exprUN -> exprUN UNION exprUN .) ]
-  ! CHAR            [ reduce using rule 6 (exprUN -> exprUN UNION exprUN .) ]
-  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprUN .) ]
+    RPAR            shift and go to state 23
+    KLEENE          shift and go to state 10
+    UNION           shift and go to state 9
 
 
 state 23
 
-    (5) exprUN -> LPAR . exprUN RPAR
-    (11) exprKLE -> LPAR . exprKLE RPAR
-    (3) exprCAT -> LPAR . exprCAT RPAR
-    (13) expr -> LPAR . expr RPAR
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
-    (8) exprKLE -> . exprKLE KLEENE
-    (9) exprKLE -> . exprUN KLEENE
-    (10) exprKLE -> . exprCAT KLEENE
-    (11) exprKLE -> . LPAR exprKLE RPAR
-    (12) exprKLE -> . expr
-    (2) exprCAT -> . exprCAT exprCAT
-    (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (13) expr -> . LPAR expr RPAR
-    (14) expr -> . CHAR
+    (7) exprUN -> LPAR exprUN RPAR .
 
-    LPAR            shift and go to state 23
-    CHAR            shift and go to state 7
+    SEMI            reduce using rule 7 (exprUN -> LPAR exprUN RPAR .)
+    UNION           reduce using rule 7 (exprUN -> LPAR exprUN RPAR .)
+    KLEENE          reduce using rule 7 (exprUN -> LPAR exprUN RPAR .)
+    RPAR            reduce using rule 7 (exprUN -> LPAR exprUN RPAR .)
 
-    exprUN                         shift and go to state 25
-    exprKLE                        shift and go to state 13
-    exprCAT                        shift and go to state 26
-    expr                           shift and go to state 14
 
 state 24
 
-    (10) exprKLE -> exprCAT . KLEENE
-    (2) exprCAT -> exprCAT . exprCAT
-    (2) exprCAT -> . exprCAT exprCAT
-    (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
-    (8) exprKLE -> . exprKLE KLEENE
-    (9) exprKLE -> . exprUN KLEENE
-    (10) exprKLE -> . exprCAT KLEENE
-    (11) exprKLE -> . LPAR exprKLE RPAR
-    (12) exprKLE -> . expr
-    (13) expr -> . LPAR expr RPAR
-    (14) expr -> . CHAR
+    (3) exprCAT -> LPAR exprCAT RPAR .
 
-    KLEENE          shift and go to state 10
-    LPAR            shift and go to state 3
-    CHAR            shift and go to state 7
+    KLEENE          reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
+    LPAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
+    CHAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
+    SEMI            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
+    UNION           reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
+    RPAR            reduce using rule 3 (exprCAT -> LPAR exprCAT RPAR .)
 
-    exprCAT                        shift and go to state 8
-    exprUN                         shift and go to state 4
-    exprKLE                        shift and go to state 5
-    expr                           shift and go to state 6
 
 state 25
 
-    (5) exprUN -> LPAR exprUN . RPAR
-    (6) exprUN -> exprUN . UNION exprUN
-    (9) exprKLE -> exprUN . KLEENE
-    (4) exprCAT -> exprUN .
+    (11) exprKLE -> LPAR exprKLE RPAR .
 
-  ! shift/reduce conflict for RPAR resolved as shift
-  ! shift/reduce conflict for KLEENE resolved as shift
-    RPAR            shift and go to state 19
-    UNION           shift and go to state 15
-    KLEENE          shift and go to state 16
-    LPAR            reduce using rule 4 (exprCAT -> exprUN .)
-    CHAR            reduce using rule 4 (exprCAT -> exprUN .)
-
-  ! RPAR            [ reduce using rule 4 (exprCAT -> exprUN .) ]
-  ! KLEENE          [ reduce using rule 4 (exprCAT -> exprUN .) ]
+    KLEENE          reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+    LPAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+    CHAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+    SEMI            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+    UNION           reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
+    RPAR            reduce using rule 11 (exprKLE -> LPAR exprKLE RPAR .)
 
 
 state 26
 
-    (3) exprCAT -> LPAR exprCAT . RPAR
-    (10) exprKLE -> exprCAT . KLEENE
-    (2) exprCAT -> exprCAT . exprCAT
-    (2) exprCAT -> . exprCAT exprCAT
-    (3) exprCAT -> . LPAR exprCAT RPAR
-    (4) exprCAT -> . exprUN
-    (5) exprUN -> . LPAR exprUN RPAR
-    (6) exprUN -> . exprUN UNION exprUN
-    (7) exprUN -> . exprKLE
-    (8) exprKLE -> . exprKLE KLEENE
-    (9) exprKLE -> . exprUN KLEENE
-    (10) exprKLE -> . exprCAT KLEENE
-    (11) exprKLE -> . LPAR exprKLE RPAR
-    (12) exprKLE -> . expr
-    (13) expr -> . LPAR expr RPAR
-    (14) expr -> . CHAR
+    (13) expr -> LPAR expr RPAR .
 
-    RPAR            shift and go to state 18
-    KLEENE          shift and go to state 10
-    LPAR            shift and go to state 3
-    CHAR            shift and go to state 7
+    KLEENE          reduce using rule 13 (expr -> LPAR expr RPAR .)
+    LPAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
+    CHAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
+    SEMI            reduce using rule 13 (expr -> LPAR expr RPAR .)
+    UNION           reduce using rule 13 (expr -> LPAR expr RPAR .)
+    RPAR            reduce using rule 13 (expr -> LPAR expr RPAR .)
 
-    exprCAT                        shift and go to state 8
-    exprUN                         shift and go to state 4
-    exprKLE                        shift and go to state 5
-    expr                           shift and go to state 6
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
-WARNING: shift/reduce conflict for KLEENE in state 4 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 3 resolved as shift
 WARNING: shift/reduce conflict for KLEENE in state 5 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 8 resolved as shift
-WARNING: shift/reduce conflict for LPAR in state 8 resolved as shift
-WARNING: shift/reduce conflict for CHAR in state 8 resolved as shift
-WARNING: shift/reduce conflict for RPAR in state 12 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 12 resolved as shift
-WARNING: shift/reduce conflict for RPAR in state 13 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 13 resolved as shift
-WARNING: shift/reduce conflict for RPAR in state 14 resolved as shift
-WARNING: shift/reduce conflict for UNION in state 22 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 22 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 22 resolved as shift
-WARNING: shift/reduce conflict for RPAR in state 25 resolved as shift
-WARNING: shift/reduce conflict for KLEENE in state 25 resolved as shift
-WARNING: reduce/reduce conflict in state 22 resolved using rule (exprCAT -> exprUN)
-WARNING: rejected rule (exprUN -> exprUN UNION exprUN) in state 22
+WARNING: shift/reduce conflict for KLEENE in state 11 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 11 resolved as shift
+WARNING: shift/reduce conflict for LPAR in state 11 resolved as shift
+WARNING: shift/reduce conflict for CHAR in state 11 resolved as shift
+WARNING: shift/reduce conflict for RPAR in state 16 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 16 resolved as shift
+WARNING: shift/reduce conflict for RPAR in state 17 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 17 resolved as shift
+WARNING: shift/reduce conflict for RPAR in state 18 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 20 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 20 resolved as shift
+WARNING: shift/reduce conflict for RPAR in state 21 resolved as shift
+WARNING: shift/reduce conflict for KLEENE in state 21 resolved as shift
+WARNING: reduce/reduce conflict in state 11 resolved using rule (exprCAT -> exprCAT exprCAT)
+WARNING: rejected rule (exprUN -> exprCAT) in state 11
+WARNING: reduce/reduce conflict in state 20 resolved using rule (exprUN -> exprUN UNION exprCAT)
+WARNING: rejected rule (exprUN -> exprCAT) in state 20

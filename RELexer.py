@@ -15,7 +15,7 @@ t_ignore = " \r\n\t,"
 
 
 def t_CHAR(t):
-    r'[a-zA-Z1-9#]'
+    r'[a-zA-Z0-9#]'
     t.value = str(t.value)
     return t
 

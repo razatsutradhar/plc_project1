@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'CHAR KLEENE LPAR RPAR SEMI UNIONstarter : exprCAT SEMIexprCAT : exprCAT exprCATexprCAT : LPAR exprCAT RPARexprCAT : exprUNexprUN : LPAR exprUN RPARexprUN : exprUN UNION exprUNexprUN : exprKLEexprKLE : exprKLE KLEENEexprKLE : exprUN KLEENEexprKLE : exprCAT KLEENEexprKLE : LPAR exprKLE RPARexprKLE : exprexpr : LPAR expr RPARexpr : CHAR'
+_lr_signature = 'CHAR KLEENE LPAR RPAR SEMI UNIONstarter : exprUN SEMIexprCAT : exprCAT exprCATexprCAT : LPAR exprCAT RPARexprCAT : exprKLEexprUN : exprUN UNION exprCATexprUN : exprCATexprUN : LPAR exprUN RPARexprKLE : exprKLE KLEENEexprKLE : exprUN KLEENEexprKLE : exprCAT KLEENEexprKLE : LPAR exprKLE RPARexprKLE : exprexpr : LPAR expr RPARexpr : CHAR'
     
-_lr_action_items = {'LPAR':([0,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,],[3,3,3,-4,-7,-12,-14,3,-10,3,-4,-7,-12,23,-9,-8,-3,-5,-11,-13,-4,23,3,-4,3,]),'CHAR':([0,2,3,4,5,6,7,8,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,],[7,7,7,-4,-7,-12,-14,7,-10,7,-4,-7,-12,7,-9,-8,-3,-5,-11,-13,-4,7,7,-4,7,]),'$end':([1,9,],[0,-1,]),'SEMI':([2,4,5,6,7,8,10,16,17,18,19,20,21,22,],[9,-4,-7,-12,-14,-2,-10,-9,-8,-3,-5,-11,-13,-6,]),'KLEENE':([2,4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,24,25,26,],[10,16,17,-12,-14,10,-10,10,16,17,-12,-9,-8,-3,-5,-11,-13,16,10,16,10,]),'RPAR':([4,5,6,7,8,10,11,12,13,14,16,17,18,19,20,21,22,25,26,],[-4,-7,-12,-14,-2,-10,18,19,20,21,-9,-8,-3,-5,-11,-13,-6,19,18,]),'UNION':([4,5,6,7,10,12,13,14,16,17,19,20,21,22,25,],[15,-7,-12,-14,-10,15,-7,-12,-9,-8,-5,-11,-13,15,15,]),}
+_lr_action_items = {'LPAR':([0,3,4,5,6,7,9,10,11,12,13,16,17,18,19,20,21,24,25,26,],[4,13,4,-4,-12,-14,13,-9,13,-10,13,13,-4,-12,-8,13,13,-3,-11,-13,]),'CHAR':([0,3,4,5,6,7,9,10,11,12,13,16,17,18,19,20,21,24,25,26,],[7,7,7,-4,-12,-14,7,-9,7,-10,7,7,-4,-12,-8,7,7,-3,-11,-13,]),'$end':([1,8,],[0,-1,]),'SEMI':([2,3,5,6,7,10,11,12,19,20,23,24,25,26,],[8,-6,-4,-12,-14,-9,-2,-10,-8,-5,-7,-3,-11,-13,]),'UNION':([2,3,5,6,7,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,],[9,-6,-4,-12,-14,-9,-2,-10,9,9,-6,-4,-12,-8,-5,-6,9,-7,-3,-11,-13,]),'KLEENE':([2,3,5,6,7,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,],[10,12,19,-12,-14,-9,12,-10,10,10,12,19,-12,-8,12,12,10,-7,-3,-11,-13,]),'RPAR':([5,6,7,10,11,12,15,16,17,18,19,20,21,22,23,24,25,26,],[-4,-12,-14,-9,-2,-10,23,24,25,26,-8,-5,24,23,-7,-3,-11,-13,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'starter':([0,],[1,]),'exprCAT':([0,2,3,8,11,15,23,24,26,],[2,8,11,8,8,24,26,8,8,]),'exprUN':([0,2,3,8,11,15,23,24,26,],[4,4,12,4,4,22,25,4,4,]),'exprKLE':([0,2,3,8,11,15,23,24,26,],[5,5,13,5,5,5,13,5,5,]),'expr':([0,2,3,8,11,15,23,24,26,],[6,6,14,6,6,6,14,6,6,]),}
+_lr_goto_items = {'starter':([0,],[1,]),'exprUN':([0,3,4,9,11,13,16,20,21,],[2,14,15,14,14,22,14,14,14,]),'exprCAT':([0,3,4,9,11,13,16,20,21,],[3,11,16,20,11,21,11,11,11,]),'exprKLE':([0,3,4,9,11,13,16,20,21,],[5,5,17,5,5,17,5,5,5,]),'expr':([0,3,4,9,11,13,16,20,21,],[6,6,18,6,6,18,6,6,6,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,18 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> starter","S'",1,None,None,None),
-  ('starter -> exprCAT SEMI','starter',2,'p_start','REParser.py',6),
+  ('starter -> exprUN SEMI','starter',2,'p_start_1','REParser.py',6),
   ('exprCAT -> exprCAT exprCAT','exprCAT',2,'p_exprCAT_1','REParser.py',11),
   ('exprCAT -> LPAR exprCAT RPAR','exprCAT',3,'p_exprCAT_2','REParser.py',16),
-  ('exprCAT -> exprUN','exprCAT',1,'p_exprCAT_3','REParser.py',21),
-  ('exprUN -> LPAR exprUN RPAR','exprUN',3,'p_exprUN_1','REParser.py',27),
-  ('exprUN -> exprUN UNION exprUN','exprUN',3,'p_exprUN_2','REParser.py',32),
-  ('exprUN -> exprKLE','exprUN',1,'p_exprUN_3','REParser.py',37),
+  ('exprCAT -> exprKLE','exprCAT',1,'p_exprCAT_3','REParser.py',21),
+  ('exprUN -> exprUN UNION exprCAT','exprUN',3,'p_exprUN_1','REParser.py',26),
+  ('exprUN -> exprCAT','exprUN',1,'p_exprUN_2','REParser.py',31),
+  ('exprUN -> LPAR exprUN RPAR','exprUN',3,'p_exprUN_3','REParser.py',36),
   ('exprKLE -> exprKLE KLEENE','exprKLE',2,'p_exprKLE_1','REParser.py',42),
   ('exprKLE -> exprUN KLEENE','exprKLE',2,'p_exprKLE_2','REParser.py',47),
   ('exprKLE -> exprCAT KLEENE','exprKLE',2,'p_exprKLE_3','REParser.py',52),
   ('exprKLE -> LPAR exprKLE RPAR','exprKLE',3,'p_exprKLE_4','REParser.py',57),
   ('exprKLE -> expr','exprKLE',1,'p_exprKLE_5','REParser.py',62),
   ('expr -> LPAR expr RPAR','expr',3,'p_expr_1','REParser.py',67),
-  ('expr -> CHAR','expr',1,'p_expr_2','REParser.py',72),
+  ('expr -> CHAR','expr',1,'p_expr_2','REParser.py',73),
 ]

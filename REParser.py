@@ -2,8 +2,8 @@ import ply.yacc as yacc
 from RELexer import tokens
 
 
-def p_start(p):
-    'starter : exprCAT SEMI'
+def p_start_1(p):
+    'starter : exprUN SEMI'
     p[0] = p[1]
 
 
@@ -18,24 +18,24 @@ def p_exprCAT_2(p):
 
 
 def p_exprCAT_3(p):
-    'exprCAT : exprUN'
+    'exprCAT : exprKLE'
     p[0] = p[1]
-
 
 
 def p_exprUN_1(p):
-    'exprUN : LPAR exprUN RPAR'
-    p[0] = p[2]
-
-
-def p_exprUN_2(p):
-    'exprUN : exprUN UNION exprUN'
+    'exprUN : exprUN UNION exprCAT'
     p[0] = ['union', p[1], p[3]]
 
 
-def p_exprUN_3(p):
-    'exprUN : exprKLE'
+def p_exprUN_2(p):
+    'exprUN : exprCAT'
     p[0] = p[1]
+
+
+def p_exprUN_3(p):
+    'exprUN : LPAR exprUN RPAR'
+    p[0] = p[2]
+
 
 
 def p_exprKLE_1(p):
@@ -66,6 +66,7 @@ def p_exprKLE_5(p):
 def p_expr_1(p):
     'expr : LPAR expr RPAR'
     p[0] = p[2]
+
 
 
 def p_expr_2(p):
